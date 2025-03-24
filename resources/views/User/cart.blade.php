@@ -45,7 +45,7 @@
                     <td>
                         <img src="{{ asset($item['image_url'] ? 'anh/' . $item['image_url'] : 'anh/default.jpg') }}" alt="{{ $item['name'] ?? 'Không có mô tả' }}" width="100">
                     </td>
-                    <td>00{{ $pet_id }}</td>
+                    <td>{{ $pet_id }}</td>
                     <td>{{ $item['description'] ?? 'Không có mô tả' }}</td>
                     <td>{{ number_format($item['price'], 0, ',', '.') }}đ</td>
                     <td>{{ $item['quantity'] }}</td>
@@ -68,17 +68,17 @@
     @if(session('Cart') && count(session('Cart')) > 0)
     <div class="cart-summary">
         <h3>Cộng Giỏ Hàng</h3>
-        <hr />
+        <hr style="  border-collapse: collapse;margin: auto;">
         <div class="summary-row">
             <h3>Tạm tính:</h3>
             <p id="cart-total">{{ number_format($total, 0, ',', '.') }}đ</p>
         </div>
-        <hr />
+        <hr style="  border-collapse: collapse;margin: auto;">
         <div class="summary-row">
             <h3>Tổng tiền:</h3>
             <p id="cart-total">{{ number_format($total, 0, ',', '.') }}đ</p>
         </div>
-        <hr />
+        <hr style="  border-collapse: collapse;margin: auto;">
         <div class="summary">
             <h3>Giao hàng:</h3>
             <p>Đồng giá<br>Tùy chọn giao hàng sẽ được cập nhật trong quá trình thanh toán.<br>Tính phí giao hàng</p>

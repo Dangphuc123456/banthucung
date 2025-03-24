@@ -44,8 +44,16 @@ a{
     padding: 0;
 }
 
-.navbar li {
-    margin: 0 15px;
+.navbar li {  
+    margin: 0 10px;   
+    padding: 10px 15px;  
+    border-radius: 5px;  
+    transition: background-color 0.3s; 
+    cursor: pointer;
+}  
+
+.navbar li:hover {  
+    background-color: #67ef64; /* Màu nền khi di chuột lên ô */  
 }
 
 .navbar a {
@@ -109,57 +117,70 @@ a{
 .search-bar {  
     padding: 16px;  
     border-radius: 8px;  
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  
 }  
 
 .search-bar .container {  
-    display: flex; 
-    align-items: center;   
-    max-width: 800px; 
-    margin: 0 auto; 
+    display: flex;  
+    align-items: center;  
+    max-width: 800px;  
+    margin: 0 auto;  
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */  
 }  
 
-.categories {  
-    padding: 12px; 
-    border: 2px solid #ccc;
-    border-radius: 4px; 
-    margin-right: 10px; 
-    font-size: 16px; 
-    background-color: #fff; 
-    cursor: pointer; 
-    width: 200px; 
-     
+.categories,  
+input[type="text"] {  
+    padding: 12px;  
+    border: 2px solid #ccc;  
+    border-radius: 4px;  
+    font-size: 16px;  
+    background-color: #fff;  
+    flex: 1 1 auto; /* Allow items to grow and shrink */  
+    min-width: 150px; /* Minimum width for better usability */  
+    margin-right: 10px; /* Space between elements */  
 }  
 
 input[type="text"] {  
-    flex: 1; 
-    padding: 12px; 
-    border: 2px solid #ccc; 
-    border-radius: 4px;
-    margin-right: 10px; 
-    font-size: 16px; 
-    outline: none; 
-    color: black;
-    width: 400px;
+    max-width: 400px; /* Set an ideal max-width for the input */  
 }  
 
 input[type="text"]:focus {  
-    border-color: #007bff; 
+    border-color: #007bff;  
 }  
 
 .search-btn {  
     padding: 12px 20px;  
-    border: none; 
-    border-radius: 4px; 
-    background-color: #cac3c3; 
-    color: white; 
-    font-size: 16px; 
+    border: none;  
+    border-radius: 4px;  
+    background-color: #cac3c3;  
+    color: white;  
+    font-size: 16px;  
     cursor: pointer;  
     transition: background-color 0.3s;  
+    white-space: nowrap; /* Prevent text from breaking into multiple lines */  
 }  
 
 .search-btn:hover {  
-    background-color: #555;
+    background-color: #555;  
+}  
+
+/* Media Query for Smaller Screens */  
+@media (max-width: 600px) {  
+    .search-bar .container {  
+        flex-direction: column; /* Stack items vertically */  
+        align-items: stretch; /* Stretch items to full width */  
+    }  
+
+    .categories,  
+    input[type="text"] {  
+        margin-right: 0; /* Remove right margin when stacked */  
+        margin-bottom: 10px; /* Add space between stacked items */  
+        width: 100%; /* Make them full width when stacked */  
+    }  
+
+    .search-btn {  
+        width: 100%; /* Make button full width */  
+    }  
 }
 
 /* Slideshow container */

@@ -11,6 +11,7 @@ class PetsController extends Controller
     public function index()
     {
         $pets = Pets::all();
+        $pets = Pets::paginate(12);
         return view('admin.pets.index', compact('pets'));
     }
     public function create()

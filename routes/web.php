@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Route;
 //////////////////////////Người dùng//////////////////////////////////
 Route::get('/', [HomeController::class, 'index'])->name('User.home');
 Route::get('contact', [HomeController::class, 'contact'])->name('User.contact');
+Route::post('contact/store', [HomeController::class, 'store'])->name('User.store');  
 Route::get('introduction', [HomeController::class, 'introduction'])->name('User.introduction');
 Route::get('/category/{category}', [HomeController::class, 'category'])->name('User.category');
 Route::get('detail/{pet_id}', [HomeController::class, 'detail'])->name('User.detail');
@@ -47,7 +48,7 @@ Route::get('guarantee.', [HomeController::class, 'guarantee'])->name('User.order
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('User.userslogin');
 Route::post('/login', [AuthController::class, 'login'])->name('User.userslogin.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('User.logout');
-Route::post('/switch-account/{newUserId}', [AuthController::class, 'switchAccount'])->name('User.switchAccount');
+// Route::post('/switch-account/{newUserId}', [AuthController::class, 'switchAccount'])->name('User.switchAccount');
 // Route cho đăng ký
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('User.usersregister');
 Route::post('/register', [AuthController::class, 'register'])->name('User.usersregister.submit');
@@ -64,7 +65,7 @@ Route::middleware(['auth:customer'])->group(function () {
 
 Route::get('/booking', [ReservationController::class, 'showForm'])->name('User.booking');
 Route::post('/booking', [ReservationController::class, 'store'])->name('User.booking.submit');
-Route::get('/appointment/{ServiceID}', [ServicesController::class, 'showservice'])->name('User.appointment');
+Route::get('/appointment', [ServicesController::class, 'showservice'])->name('User.appointment');
 Route::post('/appointment', [ServicesController::class, 'storeAppointment'])->name('User.appointments.submit');
 Route::get('/information/{order_id}', [CheckoutsController::class, 'show'])->name('User.information');
 
@@ -74,6 +75,7 @@ Route::get('admin', [AdminController::class, 'index'])->name('Admin.admin');
 Route::get('/admin/index', [AdminController::class, 'index'])->name('Admin.index');
 Route::get('/admin/notifications/new-orders', [AdminController::class, 'fetchNewOrders'])
     ->name('admin.notifications.newOrders');
+Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search.index');
 
 /////// pets//////
 Route::prefix('admin')->group(function () {

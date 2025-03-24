@@ -46,10 +46,17 @@ body {
     padding: 0;
   }
   
-  .navbar li {
-    margin: 0 15px;
-    /* Space between menu items */
-  }
+  .navbar li {  
+    margin: 0 10px;   
+    padding: 10px 15px;  
+    border-radius: 5px;  
+    transition: background-color 0.3s; 
+    cursor: pointer;
+}  
+
+.navbar li:hover {  
+    background-color: #67ef64; /* Màu nền khi di chuột lên ô */  
+}
   
   .navbar a {
     text-decoration: none;
@@ -117,94 +124,75 @@ body {
     /* Maintain aspect ratio */
   }
   
-  /* Search Bar Styles */
-  .search-bar {
-    padding: 16px;
-    /* Padding around the search bar */
-    border-radius: 8px;
-    /* Rounded corners */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow */
-  }
-  
-  .search-bar .container {
-    display: flex;
-    /* Flexbox for layout */
-    align-items: center;
-    /* Center items vertically */
-    max-width: 800px;
-    /* Max width of the search bar */
-    margin: 0 auto;
-    /* Center horizontally */
-  }
-  
-  .categories {
-    padding: 12px;
-    /* Padding inside select box */
-    border: 2px solid #ccc;
-    /* Light grey border */
-    border-radius: 4px;
-    /* Rounded corners */
-    margin-right: 10px;
-    /* Space between elements */
-    font-size: 16px;
-    /* Font size */
-    background-color: #fff;
-    /* White background */
-    cursor: pointer;
-    /* Pointer cursor on hover */
-    width: 200px;
-    /* Chiều rộng dropdown để nó không quá rộng */
-  
-  }
-  
-  input[type="text"] {
-    flex: 1;
-    /* Takes remaining space */
-    padding: 12px;
-    /* Padding inside input */
-    border: 2px solid #ccc;
-    /* Light grey border */
-    border-radius: 4px;
-    /* Rounded corners */
-    margin-right: 10px;
-    /* Space between elements */
-    font-size: 16px;
-    /* Font size */
-    outline: none;
-    /* Remove default outline */
-    color: black;
-    width: 400px;
-  }
-  
-  input[type="text"]:focus {
-    border-color: #007bff;
-    /* Blue border on focus */
-  }
-  
-  .search-btn {
-    padding: 12px 20px;
-    /* Padding for button */
-    border: none;
-    /* No border */
-    border-radius: 4px;
-    /* Rounded corners */
-    background-color: #cac3c3;
-    /* Dark background for button */
-    color: white;
-    /* White text */
-    font-size: 16px;
-    /* Font size */
-    cursor: pointer;
-    /* Pointer cursor on hover */
-    transition: background-color 0.3s;
-    /* Smooth transition */
-  }
-  
-  .search-btn:hover {
-    background-color: #555;
-    /* Lighter background on hover */
-  }
+  /* Search Bar Styles */  
+.search-bar {  
+  padding: 16px;  
+  border-radius: 8px;  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  
+}  
+
+.search-bar .container {  
+  display: flex;  
+  align-items: center;  
+  max-width: 800px;  
+  margin: 0 auto;  
+  flex-wrap: wrap; /* Allow items to wrap onto the next line */  
+}  
+
+.categories,  
+input[type="text"] {  
+  padding: 12px;  
+  border: 2px solid #ccc;  
+  border-radius: 4px;  
+  font-size: 16px;  
+  background-color: #fff;  
+  flex: 1 1 auto; /* Allow items to grow and shrink */  
+  min-width: 150px; /* Minimum width for better usability */  
+  margin-right: 10px; /* Space between elements */  
+}  
+
+input[type="text"] {  
+  max-width: 400px; /* Set an ideal max-width for the input */  
+}  
+
+input[type="text"]:focus {  
+  border-color: #007bff;  
+}  
+
+.search-btn {  
+  padding: 12px 20px;  
+  border: none;  
+  border-radius: 4px;  
+  background-color: #cac3c3;  
+  color: white;  
+  font-size: 16px;  
+  cursor: pointer;  
+  transition: background-color 0.3s;  
+  white-space: nowrap; /* Prevent text from breaking into multiple lines */  
+}  
+
+.search-btn:hover {  
+  background-color: #555;  
+}  
+
+/* Media Query for Smaller Screens */  
+@media (max-width: 600px) {  
+  .search-bar .container {  
+      flex-direction: column; /* Stack items vertically */  
+      align-items: stretch; /* Stretch items to full width */  
+  }  
+
+  .categories,  
+  input[type="text"] {  
+      margin-right: 0; /* Remove right margin when stacked */  
+      margin-bottom: 10px; /* Add space between stacked items */  
+      width: 100%; /* Make them full width when stacked */  
+  }  
+
+  .search-btn {  
+      width: 100%; /* Make button full width */  
+  }  
+}
   
   /* Slideshow container */
   .slideshow-container {

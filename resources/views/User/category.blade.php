@@ -36,7 +36,7 @@
     </div>
     <div class="about">
         <div class="menu-vertical">
-            <h3>DANH MỤC SẢN PHẨM</h3>
+            <h4>DANH MỤC SẢN PHẨM</h4>
             <hr style="color:gray">
             <ul>
                 @foreach($lsp as $category)

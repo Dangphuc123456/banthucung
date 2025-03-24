@@ -21,25 +21,25 @@ class AuthController extends Controller
     // Xử lý đăng nhập
     public function login(Request $request)
     {
-        // Validate input data  
+        // xác nhận đầu vào 
         $request->validate([
             'email' => 'required|email', // Email validation  
             'password' => 'required',
         ]);
 
-        // Find customer by email  
+        // Tìm khách hàng qua email
         $customer = Customer::where('email', $request->email)->first();
 
-        // Check if customer exists and password matches  
+        // Kiểm tra xem khách hàng có tồn tại và khớp mật khẩu không
         if ($customer && Hash::check($request->password, $customer->password)) {
-            // Log in the customer  
+            // Đăng nhập khách hàng
             Auth::guard('customer')->login($customer);
 
-            // Redirect to home page with success message  
+            // Chuyển hướng đến trang chủ với thông báo thành công  
             return redirect()->route('User.home')->with('success', 'Đăng nhập thành công!');
         }
 
-        // If login fails, return with error  
+        // Nếu đăng nhập không thành công, hãy trả về với lỗi
         return back()->withErrors(['login_error' => 'Email hoặc mật khẩu không chính xác.']);
     }
 

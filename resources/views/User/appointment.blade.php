@@ -14,27 +14,56 @@
     @include('User.component.header')
     @include('User.component.tab')
     <div class="container">
-        <!-- Kiểm tra thông báo đăng nhập thành công -->
         @if (session('success'))
-        <div class="alert alert-success" id="successMessage">
+        <div class="alert alert-success custom-alert" id="success-alert">
             {{ session('success') }}
         </div>
         @endif
     </div>
-
     <h2>Đặt lịch hẹn</h2>
-    <div class="about">
-        <div class="service">
-            <h2>Dịch vụ: {{ $service->ServiceName }}</h2>
-            <p>Mô tả: {{ $service->Description }}</p>
-            <p>Giá: {{ number_format($service->Price, 0, ',', '.') }}đ</p>
-            <p>Thời gian dịch vụ: {{ $service->ServiceDuration }} phút</p>
+    <div class="about" style="display: flex; gap: 20px;">
+        <!-- Cột trái: Danh sách dịch vụ -->
+        <div class="service-list" style="width: 50%;">
+            <h3>Danh sách dịch vụ</h3>
+            @if($service->isNotEmpty())
+            @foreach($service as $item)
+            <div class="service-item" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                <h4>{{ $item->ServiceID }}.{{ $item->ServiceName }}</h4>
+                <p><strong>Mô tả:</strong> {{ $item->Description }}</p>
+                <p><strong>Giá:</strong> {{ number_format($item->Price, 0, ',', '.') }}đ</p>
+                <p><strong>Thời gian:</strong> {{ $item->ServiceDuration }} phút</p>
+            </div>
+            @endforeach
+            @else
+            <p>Không có dịch vụ nào để hiển thị.</p>
+            @endif
         </div>
-        <!-- Form đặt lịch hẹn -->
-        <div class="appointment">
+
+        <!-- Cột phải: Form đặt lịch -->
+        <div class="appointment" style="width: 50%;">
+            <h3>Chọn dịch vụ và điền thông tin</h3>
             <form action="{{ route('User.appointments.submit') }}" method="POST">
                 @csrf
-                <input type="hidden" name="ServiceID" value="{{ $service->ServiceID }}">
+
+                <div class="information">
+                    <label for="ServiceID">Chọn dịch vụ:</label>
+                    <select id="ServiceID" name="ServiceID" class="form-input" required>
+                        <option value="">-- Chọn dịch vụ --</option>
+                        @foreach($service as $item)
+                        <option value="{{ $item->ServiceID }}">{{ $item->ServiceName }} - {{ number_format($item->Price, 0, ',', '.') }}đ</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="information">
+                    <label for="LocationName">Chọn địa điểm:</label>
+                    <select id="LocationName" name="LocationName" class="form-input" required>
+                        <option value="">-- Chọn địa điểm --</option>
+                        <option value="Số 168 Thượng Đình - Thanh Xuân - Hà Nội">Số 168 Thượng Đình - Thanh Xuân - Hà Nội</option>
+                        <option value="294 - 296 Đồng Đen - Quận Tân Bình - Hồ Chí Minh">294 - 296 Đồng Đen - Quận Tân Bình - Hồ Chí Minh</option>
+                        <option value="149-150 Thảo Nguyên - Ecopark - Hưng Yên">149-150 Thảo Nguyên - Ecopark - Hưng Yên</option>
+                    </select>
+                </div>
 
                 <div class="information">
                     <label for="CustomerName">Tên khách hàng:</label>
@@ -55,6 +84,7 @@
             </form>
         </div>
     </div>
+
     @include('User.component.scroll')
     @include('User.component.chat')
     @include('User.component.footer')

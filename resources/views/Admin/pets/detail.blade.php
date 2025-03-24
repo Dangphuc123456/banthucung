@@ -35,11 +35,15 @@
                 <div class="mb-3">
                     <label for="image_url" class="form-label">Image:</label>
                     <div>
-                        <a href="{{ $pets->image_url }}" target="_blank">
-                            <img src="{{ $pets->image_url }}" alt="Pet Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                        <a href="{{ asset('anh/' . $pets->image_url) }}" target="_blank">
+                            <img src="{{ asset('anh/' . $pets->image_url) }}"
+                                alt="Pet Image"
+                                class="img-thumbnail"
+                                style="max-width: 200px; max-height: 200px;">
                         </a>
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label for="status" class="form-label">Status :<span>{{ $pets->status }}</span></label>
                 </div>

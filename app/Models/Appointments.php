@@ -12,11 +12,13 @@ class Appointments extends Model
     protected $primaryKey = 'AppointmentID';    // khóa chính
     protected $fillable = [
         'ServiceID',
+        'ServiceName',
         'CustomerName',
         'CustomerContact',
         'AppointmentDate',
         'Status',
         'created_at',
         'updated_at',
+        'LocationName',
     ];
 }

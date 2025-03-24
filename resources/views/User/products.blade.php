@@ -23,7 +23,7 @@
     </div>
     <div class="about">
         <div class="menu-vertical">
-            <h3>DANH MỤC SẢN PHẨM</h3>
+            <h4>DANH MỤC SẢN PHẨM</h4>
             <hr style="color:gray">
             <ul>
                 @foreach($lsp as $category)
@@ -46,7 +46,7 @@
                         @else
                         <img style="width:210px; height:200px;" class="img_SP" src="anh/default.jpg" alt="Product image">
                         @endif
-                        <span class="new-label">New</span>
+                        <!-- <span class="new-label">New</span> -->
                     </div>
                     <div class="product-info">
                         <p>ID: {{ Hashids::encode($pet->pet_id) }}</p>

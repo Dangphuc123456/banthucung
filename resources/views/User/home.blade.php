@@ -29,7 +29,7 @@
                 <div class="image-container">
                     <a href="{{ route('User.detail', $item->pet_id) }}">
                         @if(isset($item->image_url))
-                        <img style="width:210px; height:200px;" class="img_SP" src="anh/{{$item->image_url}}" alt="Product image">
+                        <img style="width:230px; height:210px;" class="img_SP" src="anh/{{$item->image_url}}" alt="Product image">
                         @else
                         <img style="width:210px; height:200px;" class="img_SP" src="anh/default.jpg" alt="Product image">
                         @endif

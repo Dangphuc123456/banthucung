@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointments;
 use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Customer;
@@ -50,8 +51,10 @@ class OrdersController extends Controller
         $customer = Auth::guard('customer')->user();
         $booking = Booking::where('customer_name', $customer->name)
             ->get();
-
-        return view('User.orders.bookings', compact('booking', 'lsp'));
+        $appointments = Appointments::where('CustomerName', $customer->name)
+            ->orderBy('AppointmentDate', 'desc')
+            ->get();
+        return view('User.orders.bookings', compact('booking','appointments', 'lsp'));
     }
 
     public function guarantee()

@@ -31,7 +31,9 @@ class AdminAuthController extends Controller
         // Kiểm tra xem người dùng có tồn tại không và so sánh mật khẩu
         if ($user && Hash::check($request->password, $user->password_hash)) {
             // Nếu thành công, đăng nhập người dùng và chuyển hướng
-            Auth::guard('admin')->login($user);
+            $remember = $request->has('remember'); 
+
+            Auth::guard('admin')->login($user, $remember);
             return redirect()->route('Admin.admin')->with('success', 'Đăng nhập thành công!');
         }
 

@@ -14,7 +14,7 @@
     @include('User.component.header')
     @include('User.component.tab')
     <div class="about">
-        <h2 class="mb-4">Lịch Sử Đặt Phòng</h2>
+        <h2 class="mb-4">Lịch Sử Đặt Phòng vs Dịch vụ</h2>
 
         @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
@@ -27,9 +27,6 @@
             <thead>
                 <tr>
                     <th>ID Đặt Phòng</th>
-                    <th>Tên Khách Hàng</th>
-                    <th>Số Điện Thoại</th>
-                    <th>Email</th>
                     <th>Ngày Nhận Phòng</th>
                     <th>Ngày Trả Phòng</th>
                     <th>Tổng Giá (VNĐ)</th>
@@ -39,9 +36,6 @@
                 @foreach($booking as $b)
                 <tr>
                     <td>{{ $b->BookingID }}</td>
-                    <td>{{ $b->customer_name }}</td>
-                    <td>{{ $b->PhoneNumber }}</td>
-                    <td>{{ $b->Email }}</td>
                     <td>{{ \Carbon\Carbon::parse($b->CheckInDate)->format('d/m/Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($b->CheckOutDate)->format('d/m/Y') }}</td>
                     <td>{{ number_format($b->TotalPrice, 0, ',', '.') }}đ</td>
@@ -50,6 +44,36 @@
             </tbody>
         </table>
         @endif
+        <!-- dịch vụ -->
+        @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Dịch vụ</th>
+                    <th>Địa điểm</th>
+                    <th>Ngày hẹn</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($appointments as $index => $appointment)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $appointment->ServiceName }}</td>
+                    <td>{{ $appointment->LocationName }}</td>
+                    <td>{{ date('d/m/Y H:i', strtotime($appointment->AppointmentDate)) }}</td>
+                    <td>{{ $appointment->Status }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5">Bạn chưa có lịch hẹn nào.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
         <div class="mt-4">
             <a href="{{ route('User.home') }}" class="btn btn-primary">Quay lại trang chủ</a>
         </div>

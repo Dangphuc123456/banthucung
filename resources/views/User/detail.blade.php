@@ -119,7 +119,7 @@
                                 <a href="{{ route('User.detail', $pet->pet_id) }}" class="add-to-cart-btn">Xem chi tiết</a>
                             </div>
                             <div class="detail-button-container">
-                                <a href="{{ route('addToCart', $pet->pet_id) }}" class="add-to-cart-btn" style="width:80px">Mua ngay</a>
+                                <a href="{{ route('addToCart', $pet->pet_id) }}" class="add-to-cart-btn" >Mua ngay</a>
                             </div>
                         </div>
                 </div>

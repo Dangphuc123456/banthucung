@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class ServicesController extends Controller
 {
-    public function showservice($ServiceID)
+    public function showservice()
     {
-        $service = Service::findOrFail($ServiceID);
+        $service = Service::all();
         $lsp = Category::all(); // Lấy danh mục (nếu cần)
-        $appointments = Appointments::where('ServiceID', $ServiceID)->get();
+        $appointments = Appointments::all();
 
         return view('User.appointment', compact('service', 'lsp', 'appointments'));
     }
@@ -26,30 +26,37 @@ class ServicesController extends Controller
             'CustomerName' => 'required|string|max:100',
             'CustomerContact' => 'required|string|max:100',
             'AppointmentDate' => 'required|date',
+            'LocationName' => 'required|string|max:255', // Lấy trực tiếp từ form
         ]);
-    
-        // Lấy dịch vụ từ CSDL
-        $service = Service::find($validatedData['ServiceID']);
-    
-        // Kiểm tra nếu còn slot
-        if ($service->AvailableSlots > 0) {
-            // Trừ đi 1 slot
-            $service->AvailableSlots -= 1;
-            $service->save();
-    
+
+        try {
+            // Lấy dịch vụ từ CSDL
+            $service = Service::find($validatedData['ServiceID']);
+
+            // Kiểm tra nếu dịch vụ không tồn tại
+            if (!$service) {
+                return redirect()->back()->with('error', 'Dịch vụ không tồn tại!');
+            }
+
             // Tạo lịch hẹn
-            Appointments::create([
+            $appointment = Appointments::create([
                 'ServiceID' => $validatedData['ServiceID'],
+                'ServiceName' => $service->ServiceName,
                 'CustomerName' => $validatedData['CustomerName'],
                 'CustomerContact' => $validatedData['CustomerContact'],
                 'AppointmentDate' => $validatedData['AppointmentDate'],
+                'LocationName' => $validatedData['LocationName'],
                 'Status' => 'Pending',
             ]);
-    
+
+            // Kiểm tra nếu tạo thất bại
+            if (!$appointment) {
+                return redirect()->back()->with('error', 'Đặt lịch không thành công, vui lòng thử lại!');
+            }
+
             return redirect()->back()->with('success', 'Lịch hẹn của bạn đã được đặt thành công!');
-        } else {
-            // Nếu không còn slot
-            return redirect()->back()->with('error', 'Dịch vụ này hiện không còn slot khả dụng!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
         }
-    }    
+    }
 }

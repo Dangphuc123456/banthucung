@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Order;
 use App\Models\Pets;
 use App\Models\Service;
@@ -19,9 +20,6 @@ class HomeController extends Controller
     {
         $sp = Pets::all();
         $accessories = Pets::where('species', 'phụ kiện')->paginate(8);
-        // Lấy 10 vật nuôi mới nhất
-        // $sp = Pets::orderBy('updated_at', 'desc')->take(10)->get();
-        // Lấy 10 vật nuôi mới nhất dựa trên created_at hoặc updated_at
         $spm = Pets::orderBy('created_at', 'desc')->take(4)->get();
         // Lấy tất cả danh mục
         $lsp = Category::all();
@@ -40,7 +38,23 @@ class HomeController extends Controller
         $lsp = Category::all();
         return view('User.contact', compact('lsp', 'sp')); // Sử dụng đường dẫn chính xác
     }
+    public function store(Request $request)
+    {
+        // Xác thực dữ liệu  
+        $request->validate([
+            'lastname' => 'required|email', // Kiểm tra email  
+            'subject' => 'required|string|max:1000', // Kiểm tra nội dung  
+        ]);
 
+        // Tạo comment mới  
+        Comment::create([
+            'email' => $request->lastname,
+            'content' => $request->subject,
+        ]);
+
+        // Chuyển hướng hoặc trả về thông báo  
+        return redirect()->back()->with('success', 'Comment submitted successfully!');
+    }
 
     // Trả về view 'User.introduction'
     public function introduction()
@@ -65,15 +79,12 @@ class HomeController extends Controller
             abort(404);
         }
         $product = Pets::where('category_id', $category_id)->get();
-        $lsp = Category::all();
-        $lsp = DB::table('Categories') // Bắt đầu từ bảng 'Categories'
-            ->leftJoin('Pets', 'Categories.category_id', '=', 'Pets.category_id') // Kết hợp bảng 'Pets' với bảng 'Categories' thông qua 'category_id'
-            ->selectRaw('Categories.category_id, Categories.category_name, COUNT(Pets.pet_id) as pets_count')
-            // Chọn cột 'category_id' và 'category_name' từ bảng 'Categories' và đếm số lượng pet_id từ bảng 'Pets', đặt tên cho cột đếm là 'pets_count'
-            ->groupBy('Categories.category_id', 'Categories.category_name') // Nhóm theo cột 'category_id' và 'category_name' của bảng 'Categories'
-            ->get();
-        $sp = Pets::all();
-        return view('User.category', compact('product', 'lsp', 'sp', 'loaisp'));
+         // Lấy danh sách categories + số lượng thú cưng trong từng danh mục, SẮP XẾP THEO category_id
+         $lsp = Category::withCount('pets') // Đếm số lượng thú cưng trong mỗi danh mục
+         ->orderBy('category_id', 'asc') // Sắp xếp theo category_id từ nhỏ đến lớn
+         ->get();
+        // $sp = Pets::all();
+        return view('User.category', compact('product', 'lsp', 'loaisp'));
     }
 
     // Trả về view 'User.detail'
@@ -86,11 +97,9 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'Pet not found.');
         }
         // Lấy danh sách danh mục
-        $lsp = DB::table('Categories')
-            ->leftJoin('Pets', 'Categories.category_id', '=', 'Pets.category_id')
-            ->selectRaw('Categories.category_id, Categories.category_name, COUNT(Pets.pet_id) as pets_count')
-            ->groupBy('Categories.category_id', 'Categories.category_name')
-            ->get();
+        $lsp = Category::withCount('pets') // Đếm số lượng thú cưng trong mỗi danh mục
+         ->orderBy('category_id', 'asc') // Sắp xếp theo category_id từ nhỏ đến lớn
+         ->get();
         // Lấy danh sách thú cưng tương tự
         $similarProducts = DB::table('Pets')
             ->where('category_id', $sp->category_id)
@@ -103,29 +112,24 @@ class HomeController extends Controller
     // Trả về view 'User.product'
     public function products()
     {
+        // Lấy danh sách thú cưng theo species (chó, mèo) và phân trang 12 thú cưng/trang
         $pets = Pets::whereIn('species', ['chó', 'mèo'])->paginate(12);
-        $lsp = Category::all();
-        $lsp = DB::table('Categories') // Bắt đầu từ bảng 'Categories'
-            ->leftJoin('Pets', 'Categories.category_id', '=', 'Pets.category_id') // Kết hợp bảng 'Pets' với bảng 'Categories' thông qua 'category_id'
-            ->selectRaw('Categories.category_id, Categories.category_name, COUNT(Pets.pet_id) as pets_count')
-            // Chọn cột 'category_id' và 'category_name' từ bảng 'Categories' và đếm số lượng pet_id từ bảng 'Pets', đặt tên cho cột đếm là 'pets_count'
-            ->groupBy('Categories.category_id', 'Categories.category_name') // Nhóm theo cột 'category_id' và 'category_name' của bảng 'Categories'
-            ->get(); // Lấy tất cả các kết quả đã truy vấn
-        return view('User.products', compact('lsp', 'pets')); // Sử dụng đường dẫn chính xác
+        // Lấy danh sách categories + số lượng thú cưng trong từng danh mục, SẮP XẾP THEO category_id
+        $lsp = Category::withCount('pets') // Đếm số lượng thú cưng trong mỗi danh mục
+            ->orderBy('category_id', 'asc') // Sắp xếp theo category_id từ nhỏ đến lớn
+            ->get();
+        // Trả về view 'User.products' với dữ liệu đã xử lý
+        return view('User.products', compact('lsp', 'pets'));
     }
-
 
     // Trả về view 'User.accessory'
     public function accessory()
     {
         $accessories = Pets::where('species', 'phụ kiện')->paginate(9);
-        $lsp = Category::all();
-        $lsp = DB::table('Categories') // Bắt đầu từ bảng 'Categories'
-            ->leftJoin('Pets', 'Categories.category_id', '=', 'Pets.category_id') // Kết hợp bảng 'Pets' với bảng 'Categories' thông qua 'category_id'
-            ->selectRaw('Categories.category_id, Categories.category_name, COUNT(Pets.pet_id) as pets_count')
-            // Chọn cột 'category_id' và 'category_name' từ bảng 'Categories' và đếm số lượng pet_id từ bảng 'Pets', đặt tên cho cột đếm là 'pets_count'
-            ->groupBy('Categories.category_id', 'Categories.category_name') // Nhóm theo cột 'category_id' và 'category_name' của bảng 'Categories'
-            ->get(); // Lấy tất cả các kết quả đã truy vấn
+        // Lấy danh sách categories + số lượng thú cưng trong từng danh mục, SẮP XẾP THEO category_id
+        $lsp = Category::withCount('pets') // Đếm số lượng thú cưng trong mỗi danh mục
+            ->orderBy('category_id', 'asc') // Sắp xếp theo category_id từ nhỏ đến lớn
+            ->get();
         return view('User.accessory', compact('lsp', 'accessories')); // Sử dụng đường dẫn chính xác
     }
     // Trả về view 'User.service'
@@ -139,8 +143,6 @@ class HomeController extends Controller
     // Trả về view 'User.search'
     public function search(Request $request)
     {
-        $sp = Pets::all();
-        $lsp = Category::all();
         $key = $request->key;
         $pets = Pets::where('species', 'like', '%' . $key . '%')
             ->orWhere('description', 'like', '%' . $key . '%');
@@ -150,13 +152,10 @@ class HomeController extends Controller
                 ->orWhere('pet_id', $key);
         }
         $pets = $pets->get();
-        $lsp = DB::table('Categories') // Bắt đầu từ bảng 'Categories'
-            ->leftJoin('Pets', 'Categories.category_id', '=', 'Pets.category_id') // Kết hợp bảng 'Pets' với bảng 'Categories' thông qua 'category_id'
-            ->selectRaw('Categories.category_id, Categories.category_name, COUNT(Pets.pet_id) as pets_count')
-            // Chọn cột 'category_id' và 'category_name' từ bảng 'Categories' và đếm số lượng pet_id từ bảng 'Pets', đặt tên cho cột đếm là 'pets_count'
-            ->groupBy('Categories.category_id', 'Categories.category_name') // Nhóm theo cột 'category_id' và 'category_name' của bảng 'Categories'
-            ->get(); // Lấy tất cả các kết quả đã truy vấn
-        return view('User.search', compact('lsp', 'sp', 'pets')); // Sử dụng đường dẫn chính xác
+        $lsp = Category::withCount('pets') // Đếm số lượng thú cưng trong mỗi danh mục
+        ->orderBy('category_id', 'asc') // Sắp xếp theo category_id từ nhỏ đến lớn
+        ->get();
+        return view('User.search', compact('lsp', 'pets')); // Sử dụng đường dẫn chính xác
     }
     // Trả về view 'User.cart'
     public function cart(Request $request)

@@ -46,9 +46,16 @@ a {
   padding: 0;
 }
 
-.navbar li {
-  margin: 0 15px;
-  /* Space between menu items */
+.navbar li {  
+  margin: 0 10px;   
+  padding: 10px 15px;  
+  border-radius: 5px;  
+  transition: background-color 0.3s; 
+  cursor: pointer;
+}  
+
+.navbar li:hover {  
+  background-color: #67ef64; /* Màu nền khi di chuột lên ô */  
 }
 
 .navbar a {
@@ -121,90 +128,83 @@ a {
 /* Search Bar Styles */
 .search-bar {
   padding: 16px;
-  /* Padding around the search bar */
   border-radius: 8px;
-  /* Rounded corners */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
 }
 
 .search-bar .container {
   display: flex;
-  /* Flexbox for layout */
   align-items: center;
-  /* Center items vertically */
   max-width: 800px;
-  /* Max width of the search bar */
   margin: 0 auto;
-  /* Center horizontally */
+  flex-wrap: wrap;
+  /* Allow items to wrap onto the next line */
 }
 
-.categories {
+.categories,
+input[type="text"] {
   padding: 12px;
-  /* Padding inside select box */
   border: 2px solid #ccc;
-  /* Light grey border */
   border-radius: 4px;
-  /* Rounded corners */
+  font-size: 16px;
+  background-color: #fff;
+  flex: 1 1 auto;
+  /* Allow items to grow and shrink */
+  min-width: 150px;
+  /* Minimum width for better usability */
   margin-right: 10px;
   /* Space between elements */
-  font-size: 16px;
-  /* Font size */
-  background-color: #fff;
-  /* White background */
-  cursor: pointer;
-  /* Pointer cursor on hover */
-  width: 200px;
-  /* Chiều rộng dropdown để nó không quá rộng */
-
 }
 
 input[type="text"] {
-  flex: 1;
-  /* Takes remaining space */
-  padding: 12px;
-  /* Padding inside input */
-  border: 2px solid #ccc;
-  /* Light grey border */
-  border-radius: 4px;
-  /* Rounded corners */
-  margin-right: 10px;
-  /* Space between elements */
-  font-size: 16px;
-  /* Font size */
-  outline: none;
-  /* Remove default outline */
-  color: black;
-  width: 400px;
+  max-width: 400px;
+  /* Set an ideal max-width for the input */
 }
 
 input[type="text"]:focus {
   border-color: #007bff;
-  /* Blue border on focus */
 }
 
 .search-btn {
   padding: 12px 20px;
-  /* Padding for button */
   border: none;
-  /* No border */
   border-radius: 4px;
-  /* Rounded corners */
   background-color: #cac3c3;
-  /* Dark background for button */
   color: white;
-  /* White text */
   font-size: 16px;
-  /* Font size */
   cursor: pointer;
-  /* Pointer cursor on hover */
   transition: background-color 0.3s;
-  /* Smooth transition */
+  white-space: nowrap;
+  /* Prevent text from breaking into multiple lines */
 }
 
 .search-btn:hover {
   background-color: #555;
-  /* Lighter background on hover */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 600px) {
+  .search-bar .container {
+    flex-direction: column;
+    /* Stack items vertically */
+    align-items: stretch;
+    /* Stretch items to full width */
+  }
+
+  .categories,
+  input[type="text"] {
+    margin-right: 0;
+    /* Remove right margin when stacked */
+    margin-bottom: 10px;
+    /* Add space between stacked items */
+    width: 100%;
+    /* Make them full width when stacked */
+  }
+
+  .search-btn {
+    width: 100%;
+    /* Make button full width */
+  }
 }
 
 /* Slideshow container */
@@ -357,7 +357,7 @@ input[type="text"]:focus {
 
 h2 {
   font-size: 35px;
-  font-family: 'Baloo Bhai', cursive; 
+  font-family: 'Baloo Bhai', cursive;
   font-weight: 800;
   color: #FF69B4;
   letter-spacing: 2px;
@@ -390,16 +390,16 @@ h2 {
   width: 70%;
   /* Điều chỉnh chiều rộng bảng theo ý muốn */
   border-collapse: collapse;
-  margin-bottom: 20px;
-  margin-left: 200px;
+  margin: auto;
+  /* Căn giữa bảng */
 }
 
 .cart-table th,
 .cart-table td {
   padding: 10px;
   border-bottom: 1px solid #fffafa;
-  text-align: left;
   border: 1px solid #000;
+  text-align: center;
 }
 
 .cart-table th {
@@ -411,14 +411,16 @@ h2 {
   height: auto;
   vertical-align: middle;
 }
-.btn-btn-danger{
+
+.btn-btn-danger {
   background-color: red;
   border: 1px solid gainsboro;
   width: 100px;
   height: 40p;
   border-radius: 5px;
 }
-.btn-update{
+
+.btn-update {
   margin-top: 10px;
   background-color: #0085FF;
   border: 1px solid gainsboro;
@@ -426,11 +428,13 @@ h2 {
   height: 40p;
   border-radius: 5px;
 }
+
 /* Input số lượng */
 .quantity-input {
   width: 50px;
   padding: 5px;
 }
+
 /* thông báo  */
 .custom-alert {
   position: fixed;
@@ -448,30 +452,32 @@ h2 {
 }
 
 /* Tóm tắt giỏ hàng */
-.cart-summary {
-  margin-left:500px ;
-  width: 30%;
-  /* Điều chỉnh chiều rộng phần tóm tắt */
-  padding: 10px;
-  border: 1px solid #8d8a8a;
-  background-color: #f9f9f9;
-}
-.cart-summary h3{
-  color:#d677a1;
-}
-.cart-summary h3,
-.cart-summary p {
-  margin: 0;
-  margin-bottom: 10px;
-}
+.cart-summary {  
+  padding: 20px;  
+  width: 50%;  
+  box-sizing: border-box;  
+  border: 1px solid #000;  
+  text-align: center; /* Căn giữa nội dung trong cart-summary */  
+  margin: 0 auto; /* Căn giữa cart-summary trong bố cục tổng thể */  
+}  
 
-.cart-summary hr {
-  margin: 0;
-  width: 425px;
-  margin-right: 0px;
-  height: 3px;
-  background-color: grey;
-  border: 0px solid;
+.cart-summary h3 {  
+  font-size: 15px;  
+}  
+
+.cart-summary p {  
+  margin: 0; 
+  margin-right: 0px; 
+  margin-bottom: 10px;  
+  font-size: 10px; /* Đặt kích thước font phù hợp */  
+}  
+
+.cart-summary hr {  
+  margin: 10px 0;  
+  width: 100%;  
+  height: 2px;  
+  background-color: grey;  
+  border: 0;  
 }
 
 /* Dòng tóm tắt từng mục */
@@ -503,11 +509,6 @@ h2 {
   /* Xóa khoảng trống mặc định */
   font-size: 16px;
   color: #333;
-  /* Màu cho giá trị */
-  text-align: right;
-  /* Căn phải cho giá trị */
-  min-width: 270px;
-  /* Đặt chiều rộng tối thiểu để căn phải */
   margin-right: 10px;
 }
 
@@ -531,6 +532,7 @@ h2 {
 .btn-remove:hover {
   text-decoration: underline;
 }
+
 /* Container chung cho các nút */
 .button-container {
   display: flex;
@@ -541,7 +543,7 @@ h2 {
   margin: 20px 0;
   /* Khoảng cách trên dưới */
   margin-top: 0px;
- margin-left: 35%;
+  margin-left: 35%;
 }
 
 /* CSS cho nút "Mua Hàng" */
@@ -558,10 +560,12 @@ h2 {
   margin-top: 10px;
   margin-left: 88px;
 }
+
 .checkoutBtn:hover {
   background-color: #ed1141;
   color: white;
 }
+
 /* CSS cho phần "Tiếp tục mua hàng" */
 .ttmuahang {
   display: inline-block;
@@ -606,23 +610,28 @@ h2 {
   background-color: #ed1141;
   color: white;
 }
+
 /* Định nghĩa hiệu ứng nhấp nháy */
 @keyframes blink {
   0% {
-      opacity: 1;
+    opacity: 1;
   }
+
   50% {
-      opacity: 0;
+    opacity: 0;
   }
+
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 /* Áp dụng hiệu ứng nhấp nháy vào đoạn thông báo */
 .login-prompt {
-  animation: blink 1s infinite;  /* Tạo hiệu ứng nhấp nháy liên tục với chu kỳ 1 giây */
-  color: red;  /* Màu của thông báo */
+  animation: blink 1s infinite;
+  /* Tạo hiệu ứng nhấp nháy liên tục với chu kỳ 1 giây */
+  color: red;
+  /* Màu của thông báo */
   font-size: 14px;
 }
 
@@ -647,6 +656,7 @@ h2 {
   text-align: left;
   /* Văn bản căn trái */
 }
+
 .footer div {
   flex: 1;
   /* Các phần có kích thước bằng nhau */
@@ -832,9 +842,11 @@ h2 {
   border-radius: 100%;
   background-color: hotpink;
 }
+
 #scroll-to-top-btn:hover {
   background-color: rgb(152, 10, 45);
 }
+
 #scroll-to-top-btn svg {
   width: 30px;
   height: 20px;

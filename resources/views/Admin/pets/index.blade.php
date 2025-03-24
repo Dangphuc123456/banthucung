@@ -47,4 +47,44 @@
         </tbody>
     </table>
 </div>
+<div class="pagination">
+    <ul class="pagination">
+        <!-- Nút "Previous" -->
+        <li class="page-item {{ $pets->onFirstPage() ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ $pets->previousPageUrl() }}">&laquo; Previous</a>
+        </li>
+
+        <!-- Hiển thị số trang rút gọn -->
+        @php
+            $start = max($pets->currentPage() - 2, 1);
+            $end = min($pets->currentPage() + 2, $pets->lastPage());
+        @endphp
+
+        @if ($start > 1)
+            <li class="page-item"><a class="page-link" href="{{ $pets->url(1) }}">1</a></li>
+            @if ($start > 2)
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            @endif
+        @endif
+
+        @for ($i = $start; $i <= $end; $i++)
+            <li class="page-item {{ $i == $pets->currentPage() ? 'active' : '' }}">
+                <a class="page-link" href="{{ $pets->url($i) }}">{{ $i }}</a>
+            </li>
+        @endfor
+
+        @if ($end < $pets->lastPage())
+            @if ($end < $pets->lastPage() - 1)
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            @endif
+            <li class="page-item"><a class="page-link" href="{{ $pets->url($pets->lastPage()) }}">{{ $pets->lastPage() }}</a></li>
+        @endif
+
+        <!-- Nút "Next" -->
+        <li class="page-item {{ $pets->hasMorePages() ? '' : 'disabled' }}">
+            <a class="page-link" href="{{ $pets->nextPageUrl() }}">Next &raquo;</a>
+        </li>
+    </ul>
+</div>
+
 @endsection

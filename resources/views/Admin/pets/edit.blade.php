@@ -7,7 +7,7 @@
             <h2 class="text-center mb-0">Edit Pet Information</h2>
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.pets.update', $pets->pet_id) }}" method="POST">
+            <form action="{{ route('admin.pets.update', $pets->pet_id) }}" method="POST" >
                 @csrf
                 @method('PUT') <!-- For update requests -->
 

@@ -26,16 +26,15 @@
                         <a href="{{ route('User.booking') }}"><button id="viewRooms" class="room-action">View Available Rooms</button></a>
                     </div>
                 </div>
-                @foreach($services as $service)
+                @if($services->isNotEmpty())
                 <div class="service-item">
-                    <h2>{{ $service->Description }}</h2>
+                    <h2>{{ $services->first()->Description }}</h2>
                     <img src="{{ asset('anh/dv.webp') }}" style="height:300px;width:500px;margin-bottom:10px">
-                    <!-- Đường dẫn truyền ServiceID -->
                     <div class="room-button">
-                        <a class="room-action" href="{{ route('User.appointment', ['ServiceID' => $service->ServiceID]) }}">Xem chi tiết</a>
+                        <a class="room-action" href="{{ route('User.appointment') }}">Xem chi tiết</a>
                     </div>
                 </div>
-                @endforeach
+                @endif
             </div>
         </div>
     </div>

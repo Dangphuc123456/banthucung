@@ -25,7 +25,7 @@
                      <!-- Dropdown menu -->
                      <ul class="dropdown-menu" aria-labelledby="userAvatar">
                          <li><a class="dropdown-item" href="{{ route('User.orders.historical') }}">Lịch sử đơn hàng</a></li>
-                         <li><a class="dropdown-item" href="{{ route('User.orders.bookings') }}">Lịch sử đặt phòng</a></li>
+                         <li><a class="dropdown-item" href="{{ route('User.orders.bookings') }}">Lịch sử đặt phòng & dịch vụ</a></li>
                          <li><a class="dropdown-item" href="{{ route('User.orders.guarantee') }}">Bảo hành</a></li>
                          <li>
                              <hr class="dropdown-divider">
@@ -41,7 +41,7 @@
              </div>
              <div class="cart">
                  <a href="{{ route('User.cart') }}">
-                     <span class="shopping-cart"></span> Shopping Cart
+                     <span class="shopping-cart"></span>Giỏ hàng
                  </a>
                  @if(session('Cart_TotalQuantity', 0) > 0)
                  <div class="cart-details">
@@ -154,13 +154,14 @@
      }
 
      .user-avatar {
-         border-radius: 50%;
-         cursor: pointer;
+         width: 40px;
+         /* Kích thước lớn hơn một chút cho avatar */
+         height: 40px;
      }
 
      .user-name {
-         margin-left: 8px;
-         font-size: 14px;
+         font-size: 16px;
+         /* Thay đổi kích thước chữ cho dễ đọc */
      }
 
      .dropdown-menu {

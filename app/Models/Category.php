@@ -18,6 +18,6 @@ class Category extends Model
     // Đếm sản phẩm theo loại
     public function pets()
     {
-        return $this->hasMany(Pets::class, 'category_id');  // Chú ý 'category_id' là đúng
+        return $this->hasMany(Pets::class, 'category_id', 'category_id');
     }
 }
